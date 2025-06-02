@@ -1,11 +1,13 @@
+
 {
-  "name": "hello_near",
+  "name": "achievo_contract",
   "version": "1.0.0",
   "license": "(MIT AND Apache-2.0)",
   "type": "module",
   "scripts": {
-    "build": "near-sdk-js build src/contract.ts build/hello_near.wasm",
-    "test": "$npm_execpath run build && ava -- ./build/hello_near.wasm"
+    "build": "near-sdk-js build src/contract.ts build/achievo.wasm",
+    "test": "$npm_execpath run build && ava -- ./build/achievo.wasm",
+    "deploy:testnet": "near deploy --wasmFile build/achievo.wasm --accountId your-account.testnet"
   },
   "dependencies": {
     "near-sdk-js": "2.0.0"
