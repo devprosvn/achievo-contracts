@@ -1,0 +1,152 @@
+Quản lý người dùng
+1. register_individual(name: string, dob: string, email: string): void
+Vai trò:
+
+Đăng ký tài khoản cá nhân (học viên) trên hệ thống.
+
+Workflow:
+
+Người dùng nhập thông tin cá nhân trên frontend.
+
+Backend xác thực dữ liệu, gửi yêu cầu tới contract.
+
+Contract lưu thông tin học viên lên blockchain.
+
+Gửi phản hồi thành công hoặc thất bại.
+
+2. register_organization(name: string, contact_info: string): void
+Vai trò:
+
+Đăng ký thông tin tổ chức phát hành chứng chỉ.
+
+Workflow:
+
+Tổ chức nhập thông tin và nộp giấy tờ xác minh.
+
+Backend kiểm tra dữ liệu hợp lệ.
+
+Contract lưu thông tin tổ chức và trạng thái chờ duyệt.
+
+3. verify_organization(organization_id: string): void
+Vai trò:
+
+Phê duyệt hoặc từ chối tổ chức phát hành.
+
+Workflow:
+
+Admin kiểm tra thông tin tổ chức qua backend.
+
+Admin gửi lệnh phê duyệt hoặc từ chối.
+
+Contract cập nhật trạng thái của tổ chức.
+
+Quản lý chứng chỉ
+4. issue_certificate(learner_id: string, course_id: string, metadata: CertificateMetadata): CertificateID
+Vai trò:
+
+Cấp phát chứng chỉ số hóa cho học viên.
+
+Workflow:
+
+Tổ chức gửi yêu cầu cấp chứng chỉ với thông tin khóa học và học viên.
+
+Contract kiểm tra dữ liệu học viên và tổ chức.
+
+Contract phát hành chứng chỉ với trạng thái ban đầu, trả về ID chứng chỉ.
+
+5. update_certificate_status(certificate_id: string, new_status: string): void
+Vai trò:
+
+Cập nhật trạng thái động của chứng chỉ (ví dụ: hoàn thành, bị thu hồi).
+
+Workflow:
+
+Tổ chức gửi yêu cầu cập nhật trạng thái.
+
+Contract ghi log lịch sử cập nhật và lý do.
+
+Contract thay đổi trạng thái chứng chỉ.
+
+6. revoke_certificate(certificate_id: string, reason: string): void
+Vai trò:
+
+Thu hồi chứng chỉ do sai phạm hoặc yêu cầu từ tổ chức.
+
+Workflow:
+
+Tổ chức hoặc admin gửi yêu cầu thu hồi với lý do.
+
+Contract kiểm tra quyền hạn người yêu cầu.
+
+Contract thay đổi trạng thái chứng chỉ và ghi log.
+
+Quản lý phần thưởng
+7. grant_reward(learner_id: string, milestone: string): RewardID
+Vai trò:
+
+Tự động cấp phần thưởng khi học viên đạt cột mốc học tập.
+
+Workflow:
+
+Backend theo dõi tiến độ học tập của học viên.
+
+Gửi lệnh cấp phần thưởng khi đạt milestone.
+
+Contract ghi nhận phần thưởng vào hồ sơ học viên và trả về RewardID.
+
+8. list_rewards(learner_id: string): Reward[]
+Vai trò:
+
+Hiển thị danh sách phần thưởng của học viên.
+
+Workflow:
+
+Frontend gửi yêu cầu truy vấn danh sách phần thưởng.
+
+Contract trả về danh sách các phần thưởng đã cấp.
+
+Xác thực
+9. validate_certificate(certificate_id: string): CertificateMetadata
+Vai trò:
+
+Xác thực trạng thái và thông tin chứng chỉ.
+
+Workflow:
+
+Người dùng nhập mã chứng chỉ để xác thực.
+
+Contract kiểm tra trạng thái và trả về metadata.
+
+10. get_certificate_history(certificate_id: string): UpdateLog[]
+Vai trò:
+
+Truy vấn lịch sử thay đổi của chứng chỉ.
+
+Workflow:
+
+Người dùng hoặc tổ chức gửi yêu cầu qua frontend.
+
+Contract trả về toàn bộ lịch sử thay đổi trạng thái, lý do, và thời gian.
+
+Thanh toán và giao dịch
+11. process_payment(sender_id: string, recipient_id: string, amount: u128): void
+Vai trò:
+
+Thực hiện giao dịch giữa các ví (học viên và tổ chức).
+
+Workflow:
+
+Frontend gọi Meteor Wallet để ký giao dịch.
+
+Contract xác nhận giao dịch và chuyển NEAR từ người gửi đến người nhận.
+
+12. create_custom_token(name: string, symbol: string, decimals: u8, initial_supply: u128): TokenID
+Vai trò:
+
+Tạo token NEP-141 cho các tổ chức muốn sử dụng token riêng.
+
+Workflow:
+
+Tổ chức gửi yêu cầu tạo token với các thông số.
+
+Contract tạo token mới và trả về TokenID.
